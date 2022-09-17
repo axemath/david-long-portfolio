@@ -13,9 +13,3 @@ title: David Long's Portfolio
 7. **Singular Value Decomposition** (MATLAB)
 8. **Gabor Transforms** (MATLAB)
 9. **An Ultrasound Problem** (MATLAB)
-
-<style>
-  .footer {
-    display: none;
-  }
-</style>
