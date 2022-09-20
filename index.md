@@ -4,7 +4,7 @@ title: David Long's Portfolio
 
 # Papers and Code Samples
 
-1. **Recurrent Neural Network for Financial Time Series** (Python)
+1. [**Recurrent Neural Network for Financial Time Series** (Python)](https://axemath.github.io/david-long-portfolio/2022/09/17/rnn.html)
 2. **ARIMAX and GARCH Models for Financial Time Series** (R)
 3. **Logistic Regression on Kentucky Derby Data** (Python)
 4. **Logistic Regression on Kentucky Derby Data** (SAS)
