@@ -12,4 +12,4 @@ title: David Long's Portfolio
 6. **Data Mining, Classification & Clustering** (MATLAB)
 7. **Singular Value Decomposition** (MATLAB)
 8. **Gabor Transforms** (MATLAB)
-9. **An Ultrasound Problem** (MATLAB)
+9. [**An Ultrasound Problem** (MATLAB)](https://axemath.github.io/david-long-portfolio/2019/01/10/ultrasound.html)
