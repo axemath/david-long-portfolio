@@ -1,3 +1,7 @@
+---
+title: Logistic Regression on Kentucky Derby Data (Python)
+---
+
 These are the results of a Multivariate Analysis of Kentucky Derby data that spans the years 2002 through 2019. A variety of data about the horses that ran during those years were used in a binary logistic regression to predict the probability of winning. The model was fit with data from 2002-2018 and used to predict the probability of winning for the 2019 field. For 2002-2018, the model successfully ranked the winner 9/17 times, though the cross-validation by year was not rigorous in the sense that the model was not refit by successively withholding the fields by year. The 145th running of the Kentucky Derby was on May 4, 2019.
 
 
