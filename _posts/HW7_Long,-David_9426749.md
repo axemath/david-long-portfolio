@@ -1,0 +1,405 @@
+HW7 - CFRM502 - Winter 2022
+================
+David Long
+2/28/2022
+
+## Setup
+
+``` r
+library('forecast')
+library('fracdiff')
+library('fGarch')
+library('MASS')
+load("Homework 7 Data.Rdata")
+attach(futures)
+```
+
+## Question 1
+
+### (a) Residual Analysis of Linear Fit
+
+``` r
+futures.lm <- lm(diff(lnfuture) ~ diff(lnspot))
+summary(futures.lm)
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = diff(lnfuture) ~ diff(lnspot))
+    ## 
+    ## Residuals:
+    ##        Min         1Q     Median         3Q        Max 
+    ## -0.0038484 -0.0001568 -0.0000014  0.0001612  0.0026256 
+    ## 
+    ## Coefficients:
+    ##               Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept)  1.354e-06  3.509e-06   0.386      0.7    
+    ## diff(lnspot) 6.212e-01  1.754e-02  35.420   <2e-16 ***
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 0.0002948 on 7058 degrees of freedom
+    ## Multiple R-squared:  0.1509, Adjusted R-squared:  0.1508 
+    ## F-statistic:  1255 on 1 and 7058 DF,  p-value: < 2.2e-16
+
+The fitted model is $Y_{i}=$ 0.62122$X_{i}+\varepsilon_{i}$. The
+intercept is not significant.
+
+``` r
+futures.res <- resid(futures.lm)
+acf(futures.res, main = 'Futures Residuals')
+```
+
+<img src="HW7_Long,-David_9426749_files/figure-gfm/futuresResiduals-1.png" width="8.5in" style="display: block; margin: auto;" />
+
+``` r
+Box.test(futures.res, lag = 20, type = 'Ljung-Box')
+```
+
+    ## 
+    ##  Box-Ljung test
+    ## 
+    ## data:  futures.res
+    ## X-squared = 135.02, df = 20, p-value < 2.2e-16
+
+The residuals are correlated. This is evidenced by the first six lags in
+the ACF plot, which exceed the confidence boundaries, and the Ljung-Box
+test, which has a $P-$value of 2.2e-16, which leads to a rejection of
+the null hypothesis that all autocorrelations are zero.
+
+### (b) $\textbf{ARIMAX}$ Fit
+
+``` r
+futures.auto.arimax <- auto.arima(diff(lnfuture), xreg = diff(lnspot))
+futures.auto.arimax
+```
+
+    ## Series: diff(lnfuture) 
+    ## Regression with ARIMA(1,0,2) errors 
+    ## 
+    ## Coefficients:
+    ##          ar1      ma1      ma2    xreg
+    ##       0.8084  -0.9106  -0.0212  0.7264
+    ## s.e.  0.0158   0.0196   0.0141  0.0177
+    ## 
+    ## sigma^2 = 8.391e-08:  log likelihood = 47500.14
+    ## AIC=-94990.28   AICc=-94990.27   BIC=-94955.97
+
+`auto.arima()` chose an $ARMA(1,2)$ model for the residuals. The $AICc$
+value is -94,990.28. The fitted model is
+
+``` r
+futures.arimax.res <- residuals(futures.auto.arimax)
+checkresiduals(futures.arimax.res)
+```
+
+<img src="HW7_Long,-David_9426749_files/figure-gfm/resAutoFit-1.png" width="8.5in" style="display: block; margin: auto;" />
+
+``` r
+Box.test(futures.arimax.res, lag = 20, type = 'Ljung-Box')
+```
+
+    ## 
+    ##  Box-Ljung test
+    ## 
+    ## data:  futures.arimax.res
+    ## X-squared = 21.29, df = 20, p-value = 0.3803
+
+The time series of residuals is stationary and occasionally spikes. The
+errors don’t appear to be normally distributed. It looks like the
+kurtosis is too high, but the distribution is symmetric. The ACF shows a
+couple of significant lags, but they are late in the sequence and
+possibly due to sampling variability. In fact, the Ljung-Box test gives
+a $P-$value of 0.3803, which is not enough evidence to reject the null
+hypothesis that the errors are uncorrelated. All things considered, the
+$ARIMAX(1,0,2)$ model is a fairly good fit.
+
+### (c) `forecast()`
+
+``` r
+diff.log.spot <- 0.0002
+futures.fc <- forecast(futures.auto.arimax, xreg = diff.log.spot)
+futures.pred.int <- data.frame(futures.fc$lower[1, 2], futures.fc$mean[1], futures.fc$upper[1, 2])
+colnames(futures.pred.int) <- c('Lower Bound', '1-Step Forecast', 'Upper Bound')
+rownames(futures.pred.int) <- '95% Prediction Interval'
+knitr::kable(futures.pred.int, align = 'c', digits = 7)
+```
+
+|                         | Lower Bound | 1-Step Forecast | Upper Bound |
+|:------------------------|:-----------:|:---------------:|:-----------:|
+| 95% Prediction Interval | -0.0003743  |    0.0001935    |  0.0007612  |
+
+## Question 2
+
+### (a) S&P 500 Log Returns
+
+``` r
+data(SP500, package="Ecdat")
+ret <- SP500$r500[(1804-2*253+1):1804]
+ret.black.mon <- SP500$r500[1805]
+par(mfrow = c(1, 2))
+plot(time(ret), ret^2, type = 'l', xlab = 'Time', ylab = expression(Returns^2))
+smoother <- loess(I(ret^2)~time(ret), span = 0.03)
+lines(time(ret), fitted(smoother), col = 'red', lwd = 1)
+ret.fit.mean <- auto.arima(ret)
+ret.fit.mean
+```
+
+    ## Series: ret 
+    ## ARIMA(0,0,1) with non-zero mean 
+    ## 
+    ## Coefficients:
+    ##          ma1   mean
+    ##       0.1266  8e-04
+    ## s.e.  0.0449  5e-04
+    ## 
+    ## sigma^2 = 9.489e-05:  log likelihood = 1626.49
+    ## AIC=-3246.98   AICc=-3246.93   BIC=-3234.3
+
+``` r
+acf(ret, main = '')
+```
+
+<img src="HW7_Long,-David_9426749_files/figure-gfm/bmData-1.png" width="8.5in" style="display: block; margin: auto;" />
+
+An $ARIMA$ process is not adequate to model the returns because there is
+conditional heteroscedasticity, which is evident by the spikes in the
+plot of the squared returns versus time. The process should have an
+$MA(1)$ component because the ACF of returns shows a significant first
+lag then cuts off, and because `auto.arima()` chose an $MA(1)$ model,
+which means there is a high likelihood that the process models the
+conditional mean well. The $GARCH(1,1)$ component should be considered
+because it is known that the process has a high likelihood of adequately
+modeling the conditional variance.
+
+### (b) Fit the $\textbf{MA(1)+GARCH(1,1)}$ Model
+
+``` r
+ret.armagarch <- garchFit(~arma(0,1)+garch(1,1), data = ret,
+                          cond.dist = 'std', trace = FALSE)
+summary(ret.armagarch)
+```
+
+    ## 
+    ## Title:
+    ##  GARCH Modelling 
+    ## 
+    ## Call:
+    ##  garchFit(formula = ~arma(0, 1) + garch(1, 1), data = ret, cond.dist = "std", 
+    ##     trace = FALSE) 
+    ## 
+    ## Mean and Variance Equation:
+    ##  data ~ arma(0, 1) + garch(1, 1)
+    ## <environment: 0x000001928bb038c0>
+    ##  [data = ret]
+    ## 
+    ## Conditional Distribution:
+    ##  std 
+    ## 
+    ## Coefficient(s):
+    ##         mu         ma1       omega      alpha1       beta1       shape  
+    ## 0.00141651  0.09477620  0.00001075  0.04388403  0.85698043  4.08100238  
+    ## 
+    ## Std. Errors:
+    ##  based on Hessian 
+    ## 
+    ## Error Analysis:
+    ##         Estimate  Std. Error  t value Pr(>|t|)    
+    ## mu     1.417e-03   4.086e-04    3.467 0.000526 ***
+    ## ma1    9.478e-02   4.443e-02    2.133 0.032898 *  
+    ## omega  1.075e-05   8.591e-06    1.251 0.210842    
+    ## alpha1 4.388e-02   3.283e-02    1.337 0.181382    
+    ## beta1  8.570e-01   9.709e-02    8.826  < 2e-16 ***
+    ## shape  4.081e+00   9.239e-01    4.417 9.99e-06 ***
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Log Likelihood:
+    ##  1655.48    normalized:  3.271699 
+    ## 
+    ## Description:
+    ##  Tue Sep 27 18:36:38 2022 by user: Zen Warrior 
+    ## 
+    ## 
+    ## Standardised Residuals Tests:
+    ##                                 Statistic p-Value     
+    ##  Jarque-Bera Test   R    Chi^2  150.6826  0           
+    ##  Shapiro-Wilk Test  R    W      0.9663884 2.324894e-09
+    ##  Ljung-Box Test     R    Q(10)  4.173438  0.9391839   
+    ##  Ljung-Box Test     R    Q(15)  9.965655  0.8218948   
+    ##  Ljung-Box Test     R    Q(20)  12.75109  0.8878062   
+    ##  Ljung-Box Test     R^2  Q(10)  5.311658  0.8694107   
+    ##  Ljung-Box Test     R^2  Q(15)  9.316105  0.8604178   
+    ##  Ljung-Box Test     R^2  Q(20)  10.986    0.9465848   
+    ##  LM Arch Test       R    TR^2   8.30418   0.7609309   
+    ## 
+    ## Information Criterion Statistics:
+    ##       AIC       BIC       SIC      HQIC 
+    ## -6.519682 -6.469565 -6.519959 -6.500026
+
+The fitted model is
+
+``` r
+plot.new()
+par(mfrow = c(2, 2), mar = c(3, 2, 3, 2), cex.main = 0.75)
+plot(ret.armagarch, which=10)
+plot(ret.armagarch, which=11)
+plot(ret.armagarch, which=13)
+plot(density(residuals(ret.armagarch)))
+```
+
+<img src="HW7_Long,-David_9426749_files/figure-gfm/retFitPlots-1.png" width="8.5in" style="display: block; margin: auto;" />
+
+The Jarque-Bera and Shapiro-Wilk tests for normality are highly
+significant, which indicates that the standardized residuals are not
+normally distributed. The Ljung-Box test on the residuals fails to
+reject the zero correlation for lags up to 10, 15, and 20. The same is
+true of the squared residuals. The LM Arch Test also fails to reject the
+null that all ARCH coefficients of the standardized residuals are zero.
+
+Neither the ACF of standardized residuals nor the ACF of squared
+standardized residuals show any significant correlations, which
+corroborates the Ljung-Box tests. The QQ-Plot shows some negative skew
+that I initially thought might be an issue, but it looks like it’s due
+to a handful of outliers. The density plot actually looks like a
+$t$-distribution, so I don’t think there is an issue with the shape of
+the residuals.
+
+### (c) Conditional Distribution of $\mathbf{\hat{Y}_{n+1}}$
+
+``` r
+# plot(density(ret))
+ret.pred <- predict(ret.armagarch)
+a <- ret.pred$meanForecast[1]
+b <- ret.pred$standardDeviation[1]
+nu <- ret.armagarch@fit[["coef"]][["shape"]]
+knitr::kable(data.frame(a, b, nu), align = 'c')
+```
+
+|     a      |     b     |    nu    |
+|:----------:|:---------:|:--------:|
+| -0.0036348 | 0.0168395 | 4.081002 |
+
+### (d) $\textbf{VaR}$
+
+``` r
+alpha <- 0.001
+VaR <- qstd(alpha, mean = a, sd = b, nu = nu)
+knitr::kable(data.frame(ret.black.mon, VaR), align = 'c')
+```
+
+| ret.black.mon |    VaR     |
+|:-------------:|:----------:|
+|  -0.2280063   | -0.0881785 |
+
+``` r
+ret.black.mon < VaR
+```
+
+    ## [1] TRUE
+
+Yes, the loss for the log return on Black Monday far exceeded the 99.9%
+Value-at-risk. The market truly Fell On Black Days that Monday.
+
+### (e) Plot of Conditional Standard Deviation from the Model
+
+``` r
+plot(ret.armagarch@sigma.t, type = 'l', ylab = 'Conditional SD')
+```
+
+<img src="HW7_Long,-David_9426749_files/figure-gfm/condSd-1.png" width="8.5in" style="display: block; margin: auto;" />
+
+### (f) Plot the Conditional Standard Deviation from Iteration
+
+``` r
+omega <- ret.armagarch@fit[["coef"]][["omega"]]
+alpha1 <- ret.armagarch@fit[["coef"]][["alpha1"]]
+beta1 <- ret.armagarch@fit[["coef"]][["beta1"]]
+next.sigma <- function(a, sigma) {
+  return (sqrt(omega + alpha1 * a ^ 2 + beta1 * sigma ^ 2))
+}
+sigma.array <- array(NA, dim = length(ret))
+sigma.array[1] <- 0.013
+a.past <- residuals(ret.armagarch, standardize = FALSE)
+for (j in 2:length(ret)) {
+  sigma.array[j] <- next.sigma(a.past[j-1], sigma.array[j-1])
+}
+plot.new()
+plot(time(ret), ret.armagarch@sigma.t, type = 'l',
+     xlab = '', ylab = 'Conditional SD')
+lines(time(ret), sigma.array, type = 'l', col = 'red', lty = 2)
+```
+
+<img src="HW7_Long,-David_9426749_files/figure-gfm/iterateSigma-1.png" width="8.5in" style="display: block; margin: auto;" />
+
+### (g) Convergence Induced by the GARCH Formula
+
+Here we have $\alpha+\beta=$ 0.90086 $<1$, so $\{a_{t}\}$ is stationary
+and it has a marginal variance equal to $\frac{\omega}{1-\alpha-\beta}$.
+At time $t=1$, even though the initial values of the series as so
+disparate, they are both expected to converge to this marginal variance
+as the number of time steps increases. The GARCH formula shows that the
+conditional variance contains information about previous values of the
+variance, but the most recent is by far the most influential, so the
+influence of the exceptionally high value of 0.013 dissipates over time.
+
+After two steps from $t=1$, the influence of $\sigma_{1}^{2}$ is reduced
+by a factor of
+$\left(\alpha \varepsilon_{2}^{2}+\beta\right)\left(\alpha \varepsilon_{1}^{2}+\beta\right)$.
+After $h$ steps, the influence of $\sigma_{1}^{2}$ is reduced by a
+factor of
+$\prod_{j=1}^{h}\left(\alpha \varepsilon_{j}^{2}+\beta\right)$. Because
+$\alpha$ and $\beta$ are small, this product should dampen the influence
+of $\sigma_{1}^{2}$ even in the presence of some occasionally large
+values of $\varepsilon_{j}$. The process eventually all but forgets
+about $\sigma_{1}^{2}$ and moves on with its life.
+
+## Question 3
+
+### Average Predicted Variance
+
+Use the formula
+$E[\sigma_{n+h}^{2}|\mathcal{F}_{n-1}]=\omega\frac{1-(\alpha+\beta)^{h}}{1-(\alpha+\beta)}+(\alpha+\beta)^{h}\sigma_{n}^{2}=v[1-e^{-ah}]+e^{-ah}\sigma_{n}^{2}$
+for $h\in\{0,1,...,T-1\}$, $v=\frac{\omega}{1-\alpha-\beta}$, and
+$(\alpha+\beta)=e^{-a}$.
+
+At step (2), use the fact that $(\sigma_{n}^{2}-v)$ is known at time
+$n-1$. Step (3) simply uses the formula for a geometric partial sum
+where $r=e^{-a}$.
+
+## Question 4
+
+### $\textbf{ARFIMA}$ Simulation
+
+``` r
+set.seed(343)
+sentinel <- 1000
+phi <- 0.35
+sigma2 <- 1
+n <- c(200, 1000)
+par(mfrow = c(2, 2))
+for(j in 1:2) {
+  d0 <- array(NA, n[j])
+  d1 <- array(NA, n[j])
+  for(i in 1:sentinel) {
+    fd.sim <- fracdiff.sim(n[j], ar = phi, d = 0.3)$series
+    # plot(fd.sim, type = 'l', xlab = 't', ylab = '$ARFIMA(0,0.3,0)$')
+    # acf(fd.sim)
+    d0[i] <- fracdiff(fd.sim, nar = 0, nma = 0)$d
+    d1[i] <- fracdiff(fd.sim, nar = 1, nma = 1)$d
+  }
+  hist(d0, xlab = paste0('d0', ' (n = ', n[j], ')'), xlim = c(0, 0.5), main = '')
+  hist(d1, xlab = paste0('d1', ' (n = ', n[j], ')'), xlim = c(0, 0.5), main = '')
+}
+```
+
+<img src="HW7_Long,-David_9426749_files/figure-gfm/arfimaSim-1.png" width="8.5in" style="display: block; margin: auto;" />
+
+There is a bias-variance tradeoff between the $ARFIMA(0,d,0)$ model and
+the $ARFIMA(1,d,1)$ model. The $ARFIMA(0,d,0)$ model is biased towards
+some value near the upper bound of 0.5 and has less variability in the
+sampling distribution. The $ARFIMA(1,d,1)$ is less biased and has more
+variability. As $n$ increases, the $ARFIMA(0,d,0)$ model becomes less
+variable, while the $ARFIMA(1,d,1)$ model becomes less biased. The shape
+of the $ARFIMA(1,d,1)$ model is becoming more symmetric and the center
+seems to be approaching the population difference of $d=0.3$.
