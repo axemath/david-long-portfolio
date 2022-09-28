@@ -1,0 +1,1953 @@
+<!doctype html>
+<html lang="en">
+  
+<head> 
+  <meta charset="UTF-8"/>
+  <meta name="description" content="Where David Long's loves of mathematics and guitar collide."/>
+  <meta name="keywords" content="axemath,mathematics,statistics,guitar,DavidMarkLong,KentuckyDerbyDataAnalysis,KentuckyDerby,BinaryLogisticRegression,KentuckyDerbyPredictions,KentuckyDerbyWinners"/>
+  <meta name="author" content="David Mark Long"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  
+  <link rel="stylesheet"
+        type="text/css"
+        href="../../cssStyles/axemathStyle.css">
+  
+  <title>axemath</title>  
+</head>
+
+
+
+
+<body>  
+  <header class="lightborder">
+    <h1>Kentucky Derby Data Analysis 2002-2019</h1>
+    <h2>by David Long</h2>
+  </header>
+  
+  <nav id="navbar">
+    <a href="/" id="navbarAnchor">axemath</a>
+    <a href="http://www.kentuckyderby.com/" target="_blank" id="navbarAnchor">kentuckyderby.com</a>
+    <a href="http://www.gamblersanonymous.org/ga/" target="_blank" id="navbarAnchor">Gamblers Anonymous</a>
+    <a href="http://podcasts.axemath.com" target="blank" id="navbarAnchor">Podcasts</a>
+    <a href="../" id="navbarAnchor">Investigations</a>
+  </nav>
+  
+  <!--File Downloads-->
+  <section class="lightborder" style="background-color:#63296F;">       
+      <div>
+          <h3>
+              File Downloads
+          </h3>
+          
+          <h4>
+            The analysis for this project was done with SAS Studio.  The file extension has been changed to .txt for readability.
+          </h4>
+      </div>
+      
+      <img src="images/SASlogo.jpg" style="display:block;margin-left: auto;margin-right: auto;height: 30%; width: 30%;">
+      
+      <nav id="navbar">
+          <a href="binLogRegr/logisticRegressionScore.txt" target="_blank" id="navbarAnchor">logisticRegressionScore.txt</a>
+      </nav>
+      
+  </section>
+  
+    <!--Top-->
+    <section class="darkborder">
+      
+      <!-- 2019 Kentucky Derby Data Investigation -->
+      <div id="derby" class="content darkborder">
+    
+        
+        <h2>Multivariate Analysis of Kentucky Derby Data 2019</h2>
+        
+        <h3>Summary of Binary Logistic Regression</h3>
+        
+        <h4 style="color:#00FFFF">The score rankings were last updated on May 4, 2019 with odds from <a href="http://www.kentuckyderby.com/" target="_blank" style="color:#FAFBFE">kentuckyderby.com</a>.  The odds were updated after the race on May 8, 2019 with data from <a href="https://en.wikipedia.org/wiki/2019_Kentucky_Derby" target="_blank" style="color:#FAFBFE">wikipedia.com</a>.</h4>
+        
+        <p id="derbydesc">
+          These are the results of a Multivariate Analysis of Kentucky Derby data that spans the years 2002 through 2019.  A variety of data about the horses that ran during those years were used in a <em>binary logistic regression</em> to predict the probability of winning.  The model was fit with data from 2002-2018 and used to predict the probability of winning for the 2019 field.  For 2002-2018, the model successfully ranked the winner 9/17 times, though the cross-validation by year was not rigorous in the sense that the model was not refit by successively withholding the fields by year.  The 145th running of the Kentucky Derby was on May 4, 2019.
+        </p>
+        <p id="derbydesc">
+          The regression analysis was run on SAS Studio.  A complete listing of the output, including a desription of the predictor variables and their correlations with the response variable, can be found <a href="binLogRegr" target="_blank">here</a>.  A summary of the accuracy of the model for the years 2002-2018, a prediction of the winners for 2019 and a summary of the outcome of the 2019 race is given below.
+        </p>
+        
+        
+        
+        
+        <div class="branch">
+          <a name="IDX35"></a>
+      
+          <table class="systitleandfootercontainer" width="100%" summary="Page Layout">
+            <tr>
+              <td class="c systemtitle"><h3>Instances Where the Model Was Correct</h3></td>
+            </tr>
+          </table><br />
+          
+          <p id=derbydesc">
+            The data from 2002-2018 was used as the training set.  The estimated probabilities were sorted by year.  The model was considered successful if the horse with the highest probability won the race that year.  This is not a truly rigorous cross-validation in the sense that the field from a given year was not withheld from the training set.  The model was successful 9/17 times.  Rankings by year can be found <a href="binLogRegr/body.html#IDX18" target="_blank">here</a>.
+          </p>
+      
+          <div class="overflowHorScroll">
+            <div align="center">
+              <table class="table" cellspacing="0" border="2" bordercolor="#848484" summary=
+              "Procedure Print: Data Set WORK.REGSUCCESSSTATS">
+                <colgroup>
+                  <col />
+                </colgroup>
+      
+                <colgroup>
+                  <col />
+                  <col />
+                  <col />
+                  <col />
+                  <col />
+                  <col />
+                  <col />
+                  <col />
+                  <col />
+                  <col />
+                  <col />
+                  <col />
+                  <col />
+                  <col />
+                  <col />
+                  <col />
+                  <col />
+                  <col />
+                  <col />
+                  <col />
+                  <col />
+                  <col />
+                </colgroup>
+      
+                <thead>
+                  <tr>
+                    <th class="c m header" scope="col">Name</th>
+      
+                    <th class="c m header" scope="col">Estimated Probability</th>
+      
+                    <th class="c m header" scope="col">Finish</th>
+      
+                    <th class="c m header" scope="col">Year</th>
+      
+                    <th class="c m header" scope="col">Parimutuel<br />
+                    Odds</th>
+      
+                    <th class="c m header" scope="col">Racing<br />
+                    Style</th>
+      
+                    <th class="c m header" scope="col">Post Position</th>
+      
+                    <th class="c m header" scope="col">Number<br />
+                    of Races<br />
+                    Ran</th>
+      
+                    <th class="c m header" scope="col">Number<br />
+                    of Wins</th>
+      
+                    <th class="c m header" scope="col">Number<br />
+                    of Places</th>
+      
+                    <th class="c m header" scope="col">Number<br />
+                    of Shows</th>
+      
+                    <th class="c m header" scope="col">Length<br />
+                    of Current<br />
+                    Win Streak</th>
+      
+                    <th class="c m header" scope="col">Finish<br />
+                    Last Race</th>
+      
+                    <th class="c m header" scope="col">Number<br />
+                    of Graded<br />
+                    Stakes<br />
+                    in the<br />
+                    Money</th>
+      
+                    <th class="c m header" scope="col">Number<br />
+                    of Graded<br />
+                    Stakes<br />
+                    Wins</th>
+      
+                    <th class="c m header" scope="col">Number<br />
+                    of G1<br />
+                    Stakes<br />
+                    in the<br />
+                    Money</th>
+      
+                    <th class="c m header" scope="col">Number<br />
+                    of G1<br />
+                    Stakes<br />
+                    Wins</th>
+      
+                    <th class="c m header" scope="col">Best E1<br />
+                    Pace</th>
+      
+                    <th class="c m header" scope="col">Best E2<br />
+                    Pace</th>
+      
+                    <th class="c m header" scope="col">Best Late<br />
+                    Pace</th>
+      
+                    <th class="c m header" scope="col">Racing Speed<br />
+                    Average</th>
+      
+                    <th class="c m header" scope="col">Average Class<br />
+                    for Last 3<br />
+                    Races</th>
+      
+                    <th class="c m header" scope="col">Prime Power</th>
+                  </tr>
+                </thead>
+      
+                <tbody>
+                  <tr>
+                    <th class="c m rowheader" scope="row">WarEmblem</th>
+      
+                    <td class="r data">0.20560</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">2002</td>
+      
+                    <td class="r data">20.5</td>
+      
+                    <td class="l data">E</td>
+      
+                    <td class="r data">5</td>
+      
+                    <td class="r data">7</td>
+      
+                    <td class="r data">4</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">2</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">107</td>
+      
+                    <td class="r data">115</td>
+      
+                    <td class="r data">107</td>
+      
+                    <td class="r data">101</td>
+      
+                    <td class="r data">121.5</td>
+      
+                    <td class="r data">149.2</td>
+                  </tr>
+      
+                  <tr>
+                    <th class="c m rowheader" scope="row">SmartyJones</th>
+      
+                    <td class="r data">0.85948</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">2004</td>
+      
+                    <td class="r data">4.1</td>
+      
+                    <td class="l data">EP</td>
+      
+                    <td class="r data">13</td>
+      
+                    <td class="r data">6</td>
+      
+                    <td class="r data">6</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">6</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">100</td>
+      
+                    <td class="r data">109</td>
+      
+                    <td class="r data">116</td>
+      
+                    <td class="r data">105</td>
+      
+                    <td class="r data">123</td>
+      
+                    <td class="r data">155.9</td>
+                  </tr>
+      
+                  <tr>
+                    <th class="c m rowheader" scope="row">Barbaro</th>
+      
+                    <td class="r data">0.28128</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">2006</td>
+      
+                    <td class="r data">6.1</td>
+      
+                    <td class="l data">EP</td>
+      
+                    <td class="r data">8</td>
+      
+                    <td class="r data">5</td>
+      
+                    <td class="r data">5</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">5</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">3</td>
+      
+                    <td class="r data">3</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">92</td>
+      
+                    <td class="r data">102</td>
+      
+                    <td class="r data">101</td>
+      
+                    <td class="r data">102</td>
+      
+                    <td class="r data">121.3</td>
+      
+                    <td class="r data">153.2</td>
+                  </tr>
+      
+                  <tr>
+                    <th class="c m rowheader" scope="row">BigBrown</th>
+      
+                    <td class="r data">0.45498</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">2008</td>
+      
+                    <td class="r data">2.4</td>
+      
+                    <td class="l data">EP</td>
+      
+                    <td class="r data">20</td>
+      
+                    <td class="r data">3</td>
+      
+                    <td class="r data">3</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">3</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">107</td>
+      
+                    <td class="r data">117</td>
+      
+                    <td class="r data">98</td>
+      
+                    <td class="r data">101</td>
+      
+                    <td class="r data">121.7</td>
+      
+                    <td class="r data">156.2</td>
+                  </tr>
+      
+                  <tr>
+                    <th class="c m rowheader" scope="row">Orb</th>
+      
+                    <td class="r data">0.33688</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">2013</td>
+      
+                    <td class="r data">5.4</td>
+      
+                    <td class="l data">P</td>
+      
+                    <td class="r data">15</td>
+      
+                    <td class="r data">7</td>
+      
+                    <td class="r data">4</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">4</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">2</td>
+      
+                    <td class="r data">2</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">94</td>
+      
+                    <td class="r data">111</td>
+      
+                    <td class="r data">105</td>
+      
+                    <td class="r data">96</td>
+      
+                    <td class="r data">121.1</td>
+      
+                    <td class="r data">147.2</td>
+                  </tr>
+      
+                  <tr>
+                    <th class="c m rowheader" scope="row">CaliforniaChrome</th>
+      
+                    <td class="r data">0.50082</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">2014</td>
+      
+                    <td class="r data">2.5</td>
+      
+                    <td class="l data">EP</td>
+      
+                    <td class="r data">5</td>
+      
+                    <td class="r data">10</td>
+      
+                    <td class="r data">6</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">4</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">2</td>
+      
+                    <td class="r data">2</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">104</td>
+      
+                    <td class="r data">110</td>
+      
+                    <td class="r data">100</td>
+      
+                    <td class="r data">101</td>
+      
+                    <td class="r data">120.7</td>
+      
+                    <td class="r data">153.1</td>
+                  </tr>
+      
+                  <tr>
+                    <th class="c m rowheader" scope="row">Nyquist</th>
+      
+                    <td class="r data">0.71039</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">2016</td>
+      
+                    <td class="r data">2.3</td>
+      
+                    <td class="l data">EP</td>
+      
+                    <td class="r data">13</td>
+      
+                    <td class="r data">7</td>
+      
+                    <td class="r data">7</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">7</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">6</td>
+      
+                    <td class="r data">6</td>
+      
+                    <td class="r data">4</td>
+      
+                    <td class="r data">4</td>
+      
+                    <td class="r data">99</td>
+      
+                    <td class="r data">98</td>
+      
+                    <td class="r data">96</td>
+      
+                    <td class="r data">99</td>
+      
+                    <td class="r data">120.3</td>
+      
+                    <td class="r data">148.7</td>
+                  </tr>
+      
+                  <tr>
+                    <th class="c m rowheader" scope="row">AlwaysDreaming</th>
+      
+                    <td class="r data">0.32993</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">2017</td>
+      
+                    <td class="r data">4.7</td>
+      
+                    <td class="l data">EP</td>
+      
+                    <td class="r data">5</td>
+      
+                    <td class="r data">5</td>
+      
+                    <td class="r data">3</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">3</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">93</td>
+      
+                    <td class="r data">101</td>
+      
+                    <td class="r data">112</td>
+      
+                    <td class="r data">92</td>
+      
+                    <td class="r data">117.1</td>
+      
+                    <td class="r data">142.1</td>
+                  </tr>
+      
+                  <tr>
+                    <th class="c m rowheader" scope="row">Justify</th>
+      
+                    <td class="r data">0.60521</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">2018</td>
+      
+                    <td class="r data">2.9</td>
+      
+                    <td class="l data">EP</td>
+      
+                    <td class="r data">7</td>
+      
+                    <td class="r data">3</td>
+      
+                    <td class="r data">3</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">3</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">100</td>
+      
+                    <td class="r data">105</td>
+      
+                    <td class="r data">117</td>
+      
+                    <td class="r data">106</td>
+      
+                    <td class="r data">119.9</td>
+      
+                    <td class="r data">153.1</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div><br />
+        </div>
+        
+        
+        
+        
+        <div class="branch">
+          <a name="IDX36"></a>
+      
+          <table class="systitleandfootercontainer" width="100%" summary="Page Layout">
+            <tr>
+              <td class="c systemtitle"><h3>2019 Field</h3></td>
+            </tr>
+          </table><br />
+          
+          <p id=derbydesc">
+            The finish position and most up-to-date odds were obtained after the race.  Odds from <a href="http://www.kentuckyderby.com/" target="_blank">kentuckyderby.com</a> were pulled the morning of the race for use in the model.
+          </p>
+      
+          <div class="overflowHorScroll">
+            <div align="center">
+              <table class="table" cellspacing="0" border="2" bordercolor="#848484" summary=
+              "Procedure Print: Data Set FOLDER.CURRENTFIELD">
+                <colgroup>
+                  <col />
+                </colgroup>
+      
+                <colgroup>
+                  <col />
+                  <col />
+                  <col />
+                  <col />
+                  <col />
+                  <col />
+                  <col />
+                  <col />
+                  <col />
+                  <col />
+                  <col />
+                  <col />
+                  <col />
+                  <col />
+                  <col />
+                  <col />
+                  <col />
+                  <col />
+                  <col />
+                  <col />
+                  <col />
+                </colgroup>
+      
+                <thead>
+                  <tr>
+                    <th class="c m header" scope="col">Name</th>
+      
+                    <th class="c m header" scope="col">Finish</th>
+      
+                    <th class="c m header" scope="col">Parimutuel<br />
+                    Odds</th>
+      
+                    <th class="c m header" scope="col">Racing<br />
+                    Style</th>
+      
+                    <th class="c m header" scope="col">Post Position</th>
+      
+                    <th class="c m header" scope="col">Number<br />
+                    of Races<br />
+                    Ran</th>
+      
+                    <th class="c m header" scope="col">Number<br />
+                    of Wins</th>
+      
+                    <th class="c m header" scope="col">Number<br />
+                    of Places</th>
+      
+                    <th class="c m header" scope="col">Number<br />
+                    of Shows</th>
+      
+                    <th class="c m header" scope="col">Length<br />
+                    of Current<br />
+                    Win Streak</th>
+      
+                    <th class="c m header" scope="col">Finish<br />
+                    Last Race</th>
+      
+                    <th class="c m header" scope="col">Number<br />
+                    of Graded<br />
+                    Stakes<br />
+                    in the<br />
+                    Money</th>
+      
+                    <th class="c m header" scope="col">Number<br />
+                    of Graded<br />
+                    Stakes<br />
+                    Wins</th>
+      
+                    <th class="c m header" scope="col">Number<br />
+                    of G1<br />
+                    Stakes<br />
+                    in the<br />
+                    Money</th>
+      
+                    <th class="c m header" scope="col">Number<br />
+                    of G1<br />
+                    Stakes<br />
+                    Wins</th>
+      
+                    <th class="c m header" scope="col">Best E1<br />
+                    Pace</th>
+      
+                    <th class="c m header" scope="col">Best E2<br />
+                    Pace</th>
+      
+                    <th class="c m header" scope="col">Best Late<br />
+                    Pace</th>
+      
+                    <th class="c m header" scope="col">Racing Speed<br />
+                    Average</th>
+      
+                    <th class="c m header" scope="col">Back Speed</th>
+      
+                    <th class="c m header" scope="col">Average Class<br />
+                    for Last 3<br />
+                    Races</th>
+      
+                    <th class="c m header" scope="col">Prime Power</th>
+                  </tr>
+                </thead>
+      
+                <tbody>
+                  <tr>
+                    <th class="c m rowheader" scope="row">WarOfWill</th>
+      
+                    <td class="r data">7</td>
+      
+                    <td class="r data">16.7</td>
+      
+                    <td class="l data">EP</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">8</td>
+      
+                    <td class="r data">3</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">9</td>
+      
+                    <td class="r data">3</td>
+      
+                    <td class="r data">2</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">96</td>
+      
+                    <td class="r data">106</td>
+      
+                    <td class="r data">106</td>
+      
+                    <td class="r data">93</td>
+      
+                    <td class="r data">89</td>
+      
+                    <td class="r data">118</td>
+      
+                    <td class="r data">149.2</td>
+                  </tr>
+      
+                  <tr>
+                    <th class="c m rowheader" scope="row">Tax</th>
+      
+                    <td class="r data">14</td>
+      
+                    <td class="r data">35.5</td>
+      
+                    <td class="l data">EP</td>
+      
+                    <td class="r data">2</td>
+      
+                    <td class="r data">5</td>
+      
+                    <td class="r data">2</td>
+      
+                    <td class="r data">2</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">2</td>
+      
+                    <td class="r data">3</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">94</td>
+      
+                    <td class="r data">105</td>
+      
+                    <td class="r data">114</td>
+      
+                    <td class="r data">102</td>
+      
+                    <td class="r data">103</td>
+      
+                    <td class="r data">118.6</td>
+      
+                    <td class="r data">145.1</td>
+                  </tr>
+      
+                  <tr>
+                    <th class="c m rowheader" scope="row">ByMyStandards</th>
+      
+                    <td class="r data">11</td>
+      
+                    <td class="r data">18.8</td>
+      
+                    <td class="l data">P</td>
+      
+                    <td class="r data">3</td>
+      
+                    <td class="r data">5</td>
+      
+                    <td class="r data">2</td>
+      
+                    <td class="r data">2</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">2</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">89</td>
+      
+                    <td class="r data">99</td>
+      
+                    <td class="r data">102</td>
+      
+                    <td class="r data">91</td>
+      
+                    <td class="r data">102</td>
+      
+                    <td class="r data">116.9</td>
+      
+                    <td class="r data">138.7</td>
+                  </tr>
+      
+                  <tr>
+                    <th class="c m rowheader" scope="row">GrayMagician</th>
+      
+                    <td class="r data">19</td>
+      
+                    <td class="r data">33.8</td>
+      
+                    <td class="l data">EP</td>
+      
+                    <td class="r data">4</td>
+      
+                    <td class="r data">8</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">3</td>
+      
+                    <td class="r data">2</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">2</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">90</td>
+      
+                    <td class="r data">99</td>
+      
+                    <td class="r data">94</td>
+      
+                    <td class="r data">89</td>
+      
+                    <td class="r data">.</td>
+      
+                    <td class="r data">114.8</td>
+      
+                    <td class="r data">131.8</td>
+                  </tr>
+      
+                  <tr>
+                    <th class="c m rowheader" scope="row">Improbable</th>
+      
+                    <td class="r data">4</td>
+      
+                    <td class="r data">4</td>
+      
+                    <td class="l data">P</td>
+      
+                    <td class="r data">5</td>
+      
+                    <td class="r data">5</td>
+      
+                    <td class="r data">3</td>
+      
+                    <td class="r data">2</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">2</td>
+      
+                    <td class="r data">3</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">2</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">105</td>
+      
+                    <td class="r data">109</td>
+      
+                    <td class="r data">105</td>
+      
+                    <td class="r data">98</td>
+      
+                    <td class="r data">.</td>
+      
+                    <td class="r data">120.4</td>
+      
+                    <td class="r data">148.1</td>
+                  </tr>
+      
+                  <tr>
+                    <th class="c m rowheader" scope="row">Vekoma</th>
+      
+                    <td class="r data">12</td>
+      
+                    <td class="r data">16.8</td>
+      
+                    <td class="l data">EP</td>
+      
+                    <td class="r data">6</td>
+      
+                    <td class="r data">4</td>
+      
+                    <td class="r data">3</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">3</td>
+      
+                    <td class="r data">2</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">105</td>
+      
+                    <td class="r data">114</td>
+      
+                    <td class="r data">89</td>
+      
+                    <td class="r data">98</td>
+      
+                    <td class="r data">101</td>
+      
+                    <td class="r data">120.4</td>
+      
+                    <td class="r data">152.6</td>
+                  </tr>
+      
+                  <tr>
+                    <th class="c m rowheader" scope="row">MaximumSecurity</th>
+      
+                    <td class="r data">17</td>
+      
+                    <td class="r data">4.5</td>
+      
+                    <td class="l data">EP</td>
+      
+                    <td class="r data">7</td>
+      
+                    <td class="r data">4</td>
+      
+                    <td class="r data">4</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">4</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">71</td>
+      
+                    <td class="r data">77</td>
+      
+                    <td class="r data">123</td>
+      
+                    <td class="r data">99</td>
+      
+                    <td class="r data">102</td>
+      
+                    <td class="r data">120.2</td>
+      
+                    <td class="r data">142.9</td>
+                  </tr>
+      
+                  <tr>
+                    <th class="c m rowheader" scope="row">Tacitus</th>
+      
+                    <td class="r data">3</td>
+      
+                    <td class="r data">5.8</td>
+      
+                    <td class="l data">P</td>
+      
+                    <td class="r data">8</td>
+      
+                    <td class="r data">4</td>
+      
+                    <td class="r data">3</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">3</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">2</td>
+      
+                    <td class="r data">2</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">96</td>
+      
+                    <td class="r data">100</td>
+      
+                    <td class="r data">101</td>
+      
+                    <td class="r data">94</td>
+      
+                    <td class="r data">103</td>
+      
+                    <td class="r data">117.8</td>
+      
+                    <td class="r data">144.3</td>
+                  </tr>
+      
+                  <tr>
+                    <th class="c m rowheader" scope="row">PlusQueParfait</th>
+      
+                    <td class="r data">8</td>
+      
+                    <td class="r data">57.1</td>
+      
+                    <td class="l data">EP</td>
+      
+                    <td class="r data">9</td>
+      
+                    <td class="r data">7</td>
+      
+                    <td class="r data">2</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">2</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">13</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">86</td>
+      
+                    <td class="r data">98</td>
+      
+                    <td class="r data">97</td>
+      
+                    <td class="r data">80</td>
+      
+                    <td class="r data">.</td>
+      
+                    <td class="r data">114.2</td>
+      
+                    <td class="r data">135.2</td>
+                  </tr>
+      
+                  <tr>
+                    <th class="c m rowheader" scope="row">CuttingHumor</th>
+      
+                    <td class="r data">10</td>
+      
+                    <td class="r data">24.1</td>
+      
+                    <td class="l data">P</td>
+      
+                    <td class="r data">10</td>
+      
+                    <td class="r data">6</td>
+      
+                    <td class="r data">2</td>
+      
+                    <td class="r data">2</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">87</td>
+      
+                    <td class="r data">92</td>
+      
+                    <td class="r data">104</td>
+      
+                    <td class="r data">92</td>
+      
+                    <td class="r data">99</td>
+      
+                    <td class="r data">116.9</td>
+      
+                    <td class="r data">140</td>
+                  </tr>
+      
+                  <tr>
+                    <th class="c m rowheader" scope="row">CodeOfHonor</th>
+      
+                    <td class="r data">2</td>
+      
+                    <td class="r data">14.4</td>
+      
+                    <td class="l data">S</td>
+      
+                    <td class="r data">13</td>
+      
+                    <td class="r data">5</td>
+      
+                    <td class="r data">2</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">3</td>
+      
+                    <td class="r data">3</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">2</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">110</td>
+      
+                    <td class="r data">112</td>
+      
+                    <td class="r data">115</td>
+      
+                    <td class="r data">94</td>
+      
+                    <td class="r data">95</td>
+      
+                    <td class="r data">118.1</td>
+      
+                    <td class="r data">138.7</td>
+                  </tr>
+      
+                  <tr>
+                    <th class="c m rowheader" scope="row">WinWinWin</th>
+      
+                    <td class="r data">9</td>
+      
+                    <td class="r data">16.8</td>
+      
+                    <td class="l data">S</td>
+      
+                    <td class="r data">14</td>
+      
+                    <td class="r data">6</td>
+      
+                    <td class="r data">3</td>
+      
+                    <td class="r data">2</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">2</td>
+      
+                    <td class="r data">2</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">91</td>
+      
+                    <td class="r data">100</td>
+      
+                    <td class="r data">94</td>
+      
+                    <td class="r data">97</td>
+      
+                    <td class="r data">97</td>
+      
+                    <td class="r data">118</td>
+      
+                    <td class="r data">145.5</td>
+                  </tr>
+      
+                  <tr>
+                    <th class="c m rowheader" scope="row">MasterFencer</th>
+      
+                    <td class="r data">6</td>
+      
+                    <td class="r data">58.6</td>
+      
+                    <td class="l data">&nbsp;</td>
+      
+                    <td class="r data">15</td>
+      
+                    <td class="r data">6</td>
+      
+                    <td class="r data">2</td>
+      
+                    <td class="r data">2</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">2</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">.</td>
+      
+                    <td class="r data">.</td>
+      
+                    <td class="r data">.</td>
+      
+                    <td class="r data">.</td>
+      
+                    <td class="r data">.</td>
+      
+                    <td class="r data">.</td>
+      
+                    <td class="r data">.</td>
+                  </tr>
+      
+                  <tr>
+                    <th class="c m rowheader" scope="row">GameWinner</th>
+      
+                    <td class="r data">5</td>
+      
+                    <td class="r data">6.8</td>
+      
+                    <td class="l data">EP</td>
+      
+                    <td class="r data">16</td>
+      
+                    <td class="r data">6</td>
+      
+                    <td class="r data">4</td>
+      
+                    <td class="r data">2</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">2</td>
+      
+                    <td class="r data">5</td>
+      
+                    <td class="r data">3</td>
+      
+                    <td class="r data">4</td>
+      
+                    <td class="r data">3</td>
+      
+                    <td class="r data">101</td>
+      
+                    <td class="r data">113</td>
+      
+                    <td class="r data">102</td>
+      
+                    <td class="r data">99</td>
+      
+                    <td class="r data">97</td>
+      
+                    <td class="r data">120.3</td>
+      
+                    <td class="r data">152.3</td>
+                  </tr>
+      
+                  <tr>
+                    <th class="c m rowheader" scope="row">Roadster</th>
+      
+                    <td class="r data">15</td>
+      
+                    <td class="r data">11.6</td>
+      
+                    <td class="l data">EP</td>
+      
+                    <td class="r data">17</td>
+      
+                    <td class="r data">4</td>
+      
+                    <td class="r data">3</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">2</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">2</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">2</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">93</td>
+      
+                    <td class="r data">94</td>
+      
+                    <td class="r data">104</td>
+      
+                    <td class="r data">96</td>
+      
+                    <td class="r data">98</td>
+      
+                    <td class="r data">119</td>
+      
+                    <td class="r data">140.6</td>
+                  </tr>
+      
+                  <tr>
+                    <th class="c m rowheader" scope="row">LongRangeToddy</th>
+      
+                    <td class="r data">16</td>
+      
+                    <td class="r data">54.8</td>
+      
+                    <td class="l data">EP</td>
+      
+                    <td class="r data">18</td>
+      
+                    <td class="r data">8</td>
+      
+                    <td class="r data">4</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">6</td>
+      
+                    <td class="r data">2</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">89</td>
+      
+                    <td class="r data">94</td>
+      
+                    <td class="r data">104</td>
+      
+                    <td class="r data">90</td>
+      
+                    <td class="r data">.</td>
+      
+                    <td class="r data">118.2</td>
+      
+                    <td class="r data">140.1</td>
+                  </tr>
+      
+                  <tr>
+                    <th class="c m rowheader" scope="row">Spinoff</th>
+      
+                    <td class="r data">18</td>
+      
+                    <td class="r data">52.3</td>
+      
+                    <td class="l data">EP</td>
+      
+                    <td class="r data">19</td>
+      
+                    <td class="r data">4</td>
+      
+                    <td class="r data">2</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">2</td>
+      
+                    <td class="r data">2</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">103</td>
+      
+                    <td class="r data">101</td>
+      
+                    <td class="r data">100</td>
+      
+                    <td class="r data">95</td>
+      
+                    <td class="r data">102</td>
+      
+                    <td class="r data">117.9</td>
+      
+                    <td class="r data">142.6</td>
+                  </tr>
+      
+                  <tr>
+                    <th class="c m rowheader" scope="row">CountryHouse</th>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">65.2</td>
+      
+                    <td class="l data">S</td>
+      
+                    <td class="r data">20</td>
+      
+                    <td class="r data">6</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">2</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">3</td>
+      
+                    <td class="r data">2</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">82</td>
+      
+                    <td class="r data">98</td>
+      
+                    <td class="r data">123</td>
+      
+                    <td class="r data">93</td>
+      
+                    <td class="r data">95</td>
+      
+                    <td class="r data">118.1</td>
+      
+                    <td class="r data">138.8</td>
+                  </tr>
+      
+                  <tr>
+                    <th class="c m rowheader" scope="row">Bodexpress</th>
+      
+                    <td class="r data">13</td>
+      
+                    <td class="r data">71</td>
+      
+                    <td class="l data">EP</td>
+      
+                    <td class="r data">21</td>
+      
+                    <td class="r data">5</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">3</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">2</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">1</td>
+      
+                    <td class="r data">0</td>
+      
+                    <td class="r data">70</td>
+      
+                    <td class="r data">75</td>
+      
+                    <td class="r data">118</td>
+      
+                    <td class="r data">92</td>
+      
+                    <td class="r data">98</td>
+      
+                    <td class="r data">116</td>
+      
+                    <td class="r data">132.6</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div><br />
+        </div>
+        
+        
+        
+        
+        <div class="branch">
+          <a name="IDX37"></a>
+      
+          <table class="systitleandfootercontainer" width="100%" summary="Page Layout">
+            <tr>
+              <td class="c systemtitle"><h3>2019 Predictions Based on the Model</h3></td>
+            </tr>
+          </table><br />
+          
+          <p id=derbydesc">
+            Some elaboration about the model is in order here.  The binary response variable was coded as 1 for horses that finished first and 0 for the rest of the horses.  The prediction algorithm considers each horse in the 2019 field in turn.  It uses the values of the predictor variables to estimate the likelihood that the current horse under consideration belongs to the group of horses that finished first.  The complementary probability gives the likelihood that the current horse under consideration belongs to the group of not-winners (losers).  Each horse in the race is considered independently of the rest of the field and the sum of the probabilities by year does not need to sum to one.
+          </p>
+      
+          <div class="overflowHorScroll">
+            <div align="center">
+              <table class="table" cellspacing="0" border="2" bordercolor="#848484" summary=
+              "Procedure Print: Data Set WORK.MODELPRED">
+                <colgroup>
+                  <col />
+                </colgroup>
+      
+                <colgroup>
+                  <col />
+                  <col />
+                  <col />
+                </colgroup>
+      
+                <thead>
+                  <tr>
+                    <th class="c m header" scope="col">Name</th>
+      
+                    <th class="c m header" scope="col">Parimutuel<br />
+                    Odds</th>
+      
+                    <th class="c m header" scope="col">Probability<br />
+                    of Winning</th>
+      
+                    <th class="c m header" scope="col">Finish</th>
+                  </tr>
+                </thead>
+      
+                <tbody>
+                  <tr>
+                    <th class="c m rowheader" scope="row">MaximumSecurity</th>
+      
+                    <td class="r data">4.5</td>
+      
+                    <td class="r data">0.54558</td>
+      
+                    <td class="r data">17</td>
+                  </tr>
+      
+                  <tr>
+                    <th class="c m rowheader" scope="row">Roadster</th>
+      
+                    <td class="r data">11.6</td>
+      
+                    <td class="r data">0.27565</td>
+      
+                    <td class="r data">15</td>
+                  </tr>
+      
+                  <tr>
+                    <th class="c m rowheader" scope="row">CodeOfHonor</th>
+      
+                    <td class="r data">14.4</td>
+      
+                    <td class="r data">0.13678</td>
+      
+                    <td class="r data">2</td>
+                  </tr>
+      
+                  <tr>
+                    <th class="c m rowheader" scope="row">Improbable</th>
+      
+                    <td class="r data">4</td>
+      
+                    <td class="r data">0.10249</td>
+      
+                    <td class="r data">4</td>
+                  </tr>
+      
+                  <tr>
+                    <th class="c m rowheader" scope="row">Tacitus</th>
+      
+                    <td class="r data">5.8</td>
+      
+                    <td class="r data">0.09503</td>
+      
+                    <td class="r data">3</td>
+                  </tr>
+      
+                  <tr>
+                    <th class="c m rowheader" scope="row">GameWinner</th>
+      
+                    <td class="r data">6.8</td>
+      
+                    <td class="r data">0.05644</td>
+      
+                    <td class="r data">5</td>
+                  </tr>
+      
+                  <tr>
+                    <th class="c m rowheader" scope="row">ByMyStandards</th>
+      
+                    <td class="r data">18.8</td>
+      
+                    <td class="r data">0.04349</td>
+      
+                    <td class="r data">11</td>
+                  </tr>
+      
+                  <tr>
+                    <th class="c m rowheader" scope="row">GrayMagician</th>
+      
+                    <td class="r data">33.8</td>
+      
+                    <td class="r data">0.01535</td>
+      
+                    <td class="r data">19</td>
+                  </tr>
+      
+                  <tr>
+                    <th class="c m rowheader" scope="row">CuttingHumor</th>
+      
+                    <td class="r data">24.1</td>
+      
+                    <td class="r data">0.01316</td>
+      
+                    <td class="r data">10</td>
+                  </tr>
+      
+                  <tr>
+                    <th class="c m rowheader" scope="row">WinWinWin</th>
+      
+                    <td class="r data">16.8</td>
+      
+                    <td class="r data">0.01128</td>
+      
+                    <td class="r data">9</td>
+                  </tr>
+      
+                  <tr>
+                    <th class="c m rowheader" scope="row">CountryHouse</th>
+      
+                    <td class="r data">65.2</td>
+      
+                    <td class="r data">0.01009</td>
+      
+                    <td class="r data">1</td>
+                  </tr>
+      
+                  <tr>
+                    <th class="c m rowheader" scope="row">Bodexpress</th>
+      
+                    <td class="r data">71</td>
+      
+                    <td class="r data">0.00960</td>
+      
+                    <td class="r data">13</td>
+                  </tr>
+      
+                  <tr>
+                    <th class="c m rowheader" scope="row">WarOfWill</th>
+      
+                    <td class="r data">16.7</td>
+      
+                    <td class="r data">0.00721</td>
+      
+                    <td class="r data">7</td>
+                  </tr>
+      
+                  <tr>
+                    <th class="c m rowheader" scope="row">Spinoff</th>
+      
+                    <td class="r data">52.3</td>
+      
+                    <td class="r data">0.00688</td>
+      
+                    <td class="r data">18</td>
+                  </tr>
+      
+                  <tr>
+                    <th class="c m rowheader" scope="row">Tax</th>
+      
+                    <td class="r data">35.5</td>
+      
+                    <td class="r data">0.00652</td>
+      
+                    <td class="r data">14</td>
+                  </tr>
+      
+                  <tr>
+                    <th class="c m rowheader" scope="row">Vekoma</th>
+      
+                    <td class="r data">16.8</td>
+      
+                    <td class="r data">0.00529</td>
+      
+                    <td class="r data">12</td>
+                  </tr>
+      
+                  <tr>
+                    <th class="c m rowheader" scope="row">PlusQueParfait</th>
+      
+                    <td class="r data">57.1</td>
+      
+                    <td class="r data">0.00336</td>
+      
+                    <td class="r data">8</td>
+                  </tr>
+      
+                  <tr>
+                    <th class="c m rowheader" scope="row">LongRangeToddy</th>
+      
+                    <td class="r data">54.8</td>
+      
+                    <td class="r data">0.00259</td>
+      
+                    <td class="r data">16</td>
+                  </tr>
+      
+                  <tr>
+                    <th class="c m rowheader" scope="row">MasterFencer</th>
+      
+                    <td class="r data">58.6</td>
+      
+                    <td class="r data">.</td>
+      
+                    <td class="r data">6</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div><br />
+          
+          <p id="derbydesc">
+            Fans of racing will know that this was the most controversial outcome of the Kentucky Derby in history.  For the first time ever, the winner of the race was disqualified on an objection.  After an NFL-style review of multiple camera-angles of the race, the stewards concluded that Maximum Security was guilty of a lane violation and stripped the roses off from 'round his neck.
+          </p>
+          
+          <p id="derbydesc">
+            The model is heavily influenced by parimutuel odds and grade one stakes performances, which is why Maximum Security had such a high score relative to the rest of the field.  Without the DQ, the model would have been considered successful and would have had the first five horses within the six highest scores.  The fact that he was demoted to 17th may have a negative impact on the ability of the model to render accurate predictions in future years.
+          </p>
+          
+          <p id="derbydesc">
+            Country House is the winner of the 145th running of the Kentucky Derby.  The lieklihood of him belonging to the group of winners was small, but higher than many horses with lower odds.  Note that the horse had already finished in the money in a grade one stakes race.  At final odds of 65.2, outlandish payouts were received by a few lucky individual, yours truly not included.  The $2 exacta paid $3,009.60, the $0.50 trifecta paid $5,737.65, and the $1 superfecta paid $51,400.10.
+          </p>
+          
+        </div>
+
+
+
+
+
+      <!-- 2002-2014 Kentucky Derby Data Investigation -->
+      <div id="derby" class="content darkborder">
+    
+        
+        <h2>Multivariate Analysis of Kentucky Derby Data 2002-2014</h2>
+        
+        <video controls id="derbyvideo" class="mediaborder">
+            <source src="../../video/derbyanalysisdavidlong.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        
+        <p id="derbydesc">
+          These are the results of a Multivariate Analysis of Kentucky Derby data that spans the years 2002 through 2014. A <em>Principal Component Analysis</em>, <em>Discriminant Analysis</em>, and <em>Cluster Analysis</em> were run.  Tons and tons of number-crunching and<span style="background-color:#7D4889;"><em> ---spoiler alert--- </em></span>nothing to see here.  Parimutuel odds seems to be the only variable worth considering.  Score one for the Bayesians.  
+        </p>
+        <p id="derbydesc">
+          The most exciting minutes are the last two, which features <em>I'll Have Another</em> winning the <em>138th Kentuck Derby</em> in 2012.
+        </p>
+        
+        
+      </div>
+  </section>
+  
+  <!--Bottom-->
+  <section class="darkborder">
+
+      
+      <div class="darkborder">
+          <h2>Research & Investigations</h2>
+          
+          <ul>
+              <li><a href="../derby" id="navbarAnchor">Kentucky Derby Data Analysis</a></li>
+              <li><a href="../ica" id="navbarAnchor">Independent Component Analysis</a></li>
+              <li><a href="../dmd/dmd.pdf" target="_blank" id="navbarAnchor">Dynamic Mode Decomposition</a></li>
+              <li><a href="../dataMining/dataMining.pdf" target="_blank" id="navbarAnchor">Data Mining</a></li>
+          </ul>
+      </div>
+      
+  </section>
+  
+  <nav id="navbar">
+    <a href="/" id="navbarAnchor">axemath</a>
+    <a href="http://podcasts.axemath.com" target="blank" id="navbarAnchor">Podcasts</a>
+    <a href="../" id="navbarAnchor">Investigations</a>
+  </nav>
+  
+  <footer>
+
+  </footer>
+</body>
